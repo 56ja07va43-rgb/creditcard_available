@@ -1,3 +1,4 @@
+
 def creditcard_available(creditcard_number:str):
     creditcard_number_rev = creditcard_number[::-1]
     total_nums = 0
@@ -9,9 +10,50 @@ def creditcard_available(creditcard_number:str):
             nums = int(creditcard_number_rev[i])
         total_nums += nums
 
-    if total_nums != 0 and total_nums % 10 == 0: return True
+    if total_nums != 0 and total_nums % 10 == 0: return True, creditcard_number
 
-    return False
+    return False, creditcard_number
 
-inputs = input()
-eval('print(creditcard_available(inputs))')
+# inputs = input()
+# eval('print(creditcard_available(inputs))')
+
+'''
+VISA 開頭4
+mastercard 開頭51~55
+JCB 開頭3528~3589
+'''
+def company_name(creditcard_number:str):
+    target = creditcard_number[0]
+    match target:
+        # visa
+        case '4': company = 'visa'
+        # mastercard
+        case '5':
+            if int(creditcard_number[:2]) >= 51 and int(creditcard_number[:2]) <= 55:
+                company = 'mastercard'
+            else:
+                company = 'other'
+        # jcb
+        case '3':
+            if int(creditcard_number[:4]) >= 3528 and int(creditcard_number[:4]) <= 3589:
+                company = 'jcb'
+            else:
+                company = 'other'
+        case _ :
+            company = 'other'
+
+    return company
+
+
+if __name__ == '__main__':
+    inputs = input()
+    is_available, creditcard_number = creditcard_available(inputs)
+    print(is_available, creditcard_number)
+
+    if is_available: 
+        company = company_name(creditcard_number)
+        print(company)
+
+
+
+
